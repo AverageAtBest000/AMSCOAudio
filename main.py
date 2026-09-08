@@ -10,7 +10,15 @@ file_name = sys.argv[1]
 doc = pymupdf.open(file_name)
 
 for page_num, page in enumerate(doc):
+
     text = page.get_text()
+
+    # No embedded text - OCR the page
+    if not text.strip():
+        print(f"OCRing page {page_num + 1}...")
+
+        text_page = page.get_textpage_ocr()
+        text = page.get_text(textpage=text_page)
 
     print(f"--- Page {page_num + 1} ---")
     print(text)
