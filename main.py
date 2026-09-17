@@ -1,4 +1,5 @@
 import pymupdf
+import pyttsx3
 import sys
 
 if len(sys.argv) != 2:
@@ -6,11 +7,11 @@ if len(sys.argv) != 2:
     sys.exit(1)
 
 file_name = sys.argv[1]
-
 doc = pymupdf.open(file_name)
 
-for page_num, page in enumerate(doc):
+full_text = ""
 
+for page_num, page in enumerate(doc):
     text = page.get_text()
 
     if not text.strip():
@@ -24,5 +25,15 @@ for page_num, page in enumerate(doc):
 
         text = page.get_text(textpage=text_page)
 
-    print(f"--- Page {page_num + 1} ---")
-    print(text)
+    print(f"Processed page {page_num + 1}")
+    full_text += text + "\n"
+
+print("Generating audio...")
+
+engine = pyttsx3.init()
+engine.setProperty("rate", 180)
+
+engine.save_to_file(full_text, "output.mp3")
+engine.runAndWait()
+
+print("Done: output.mp3")
