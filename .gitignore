@@ -1,4 +1,6 @@
 # Byte-compiled / optimized / DLL files
+voices/
+audio-piper/
 __pycache__/
 *.py[codz]
 *$py.class
